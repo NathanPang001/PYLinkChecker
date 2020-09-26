@@ -19,4 +19,4 @@ The commands are:
 
 An example of running this code is:
 "PYLinkChecker.py -file test.txt"
-And the output is shown in the file PYTest-File.jpg
+and the output is shown in the file PYTest-File.jpg
