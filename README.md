@@ -10,8 +10,11 @@ It checks if URL's are valid by sending a request to the url and using the respo
 The optional requirements are that this tool has an option for version and it supports both Windows and Unix Style command line arguments
 
 The commands are:
+
 -file (filename) / --file (filename) / /file (filename)
+
 -url (link) / --url (link) / /url (link)
+
 -v / --v / /v
 
 An example of running this code is:
