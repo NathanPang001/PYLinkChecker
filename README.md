@@ -18,5 +18,5 @@ The commands are:
 -v / --v / /v
 
 An example of running this code is:
-PYLinkChecker.py -file test.txt
+"PYLinkChecker.py -file test.txt"
 And the output is shown in the file PYTest-File.jpg
