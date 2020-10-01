@@ -42,7 +42,7 @@ elif len(sys.argv) == 3:
             #response = requests.get(sys.argv[2])
             
             #with urllib3
-            response = http.request('GET', sys.argv[2])
+            response = http.request('HEAD', sys.argv[2])
             if response.status == 200:
                 print(sys.argv[2], ": good")
             elif response.status == 400 or response == 404:
