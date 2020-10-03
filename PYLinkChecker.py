@@ -29,11 +29,16 @@ elif len(sys.argv) == 3:
 
             for line in lines:
 
-                #using regex to find urls then slicing off the first and last 2 characters to only display URL
+                #Using regex to find urls then slicing off the first and last 2 characters to only display URL
                 if ('http://' in line or 'https://' in line):
-                    print(str(re.findall(r'https?://[^\s<>"].[^\s<>"]+', line))[2:-2], Fore.GREEN +  "is a valid link" + Fore.RESET)
+                    print(Fore.GREEN + str(re.findall(r'https?://[^\s<>"].[^\s<>"]+', line))[2:-2] + " is a valid link" + Fore.RESET)
+                elif ('www.' in line and '://' not in line):
+                    print(Fore.RED + str(re.findall(r'www.[^\s<>"].[^\s<>"]+', line))[2:-2] + " is not a valid link" + Fore.RESET)
                 else:
-                    print(str(re.findall(r'www.[^\s<>"].[^\s<>"]+', line))[2:-2], Fore.RED + "is not a valid link" + Fore.RESET)
+                    if ("<" and ">" in line): #covers situation involving urls within html tags with misspelled http/https
+                        print(Fore.RED + str(re.findall(r'>(.*?)<', line))[2:-2] + " is not a valid link" + Fore.RESET)
+                    else:
+                        print(Fore.RED + line + " is not a valid link" + Fore.RESET)
         except:
             print(Fore.RED + "Sorry, file not found" + Fore.RESET)
         
