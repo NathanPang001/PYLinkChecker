@@ -4,13 +4,14 @@
 #optional requirements: version and supporting both Windows and Unix Style command line args
 
 import sys
-import argparse
 import urllib3
-#import requests
+import re
 
 http = urllib3.PoolManager()
 from colorama import init, Fore
 init(convert=True)
+
+
 #Checking for number of arguments with if/elif
 if len(sys.argv) == 1:
     print(Fore.RED + "No arguments, please enter either -file (filename), -url (link), or -v"+ Fore.RESET)
@@ -27,11 +28,13 @@ elif len(sys.argv) == 3:
             with open(sys.argv[2], 'r') as f:
                 lines = [line.rstrip('\n') for line in f.readlines()]
 
-                for line in lines:
-                    if ('http://' in line or 'https://' in line):
-                        print (line , Fore.GREEN +  "is a valid link" + Fore.RESET)
-                    else:
-                        print (line, Fore.RED + "is not a valid link" + Fore.RESET)
+            for line in lines:
+
+                #using regex to find urls then slicing off the first and last 2 characters to only display URL
+                if ('http://' in line or 'https://' in line):
+                    print(str(re.findall(r'https?://[^\s<>"].[^\s<>"]+', line))[2:-2], Fore.GREEN +  "is a valid link" + Fore.RESET)
+                else:
+                    print(str(re.findall(r'www.[^\s<>"].[^\s<>"]+', line))[2:-2], Fore.RED + "is not a valid link" + Fore.RESET)
         except:
             print(Fore.RED + "Sorry, file not found" + Fore.RESET)
         
