@@ -19,8 +19,7 @@ if len(sys.argv) == 1:
 
 elif len(sys.argv) == 3:
 
-    
-    
+
     #File Checker
     if(sys.argv[1] == "-file" or sys.argv[1] == "--file" or sys.argv[1] == "/file"):
         print("File Checker")
