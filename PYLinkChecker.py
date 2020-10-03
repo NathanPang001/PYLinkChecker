@@ -12,7 +12,6 @@ from colorama import init, Fore
 init(convert=True)
 
 
-
 #Checking for number of arguments with if/elif
 if len(sys.argv) == 1:
     print(Fore.RED + "No arguments, please enter either -file (filename), -url (link), or -v"+ Fore.RESET)
