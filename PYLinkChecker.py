@@ -16,7 +16,14 @@ if len(sys.argv) == 1:
     print(Fore.RED + "No arguments, please enter either -file (filename), -url (link), or -v"+ Fore.RESET)
     print(Fore.RED + "Windows and Unix style commands also work, --v, /v, etc"+ Fore.RESET)
 
-elif len(sys.argv) == 3:
+elif len(sys.argv) == 3 or len(sys.argv) == 4:
+
+    g = 0
+    if (len(sys.argv) == 4):
+        if (sys.argv[3]) == "--good":
+            g = 1
+        elif (sys.argv[3]) == "--bad":
+            g = 2
 
     if(sys.argv[1] == "-file" or sys.argv[1] == "--file" or sys.argv[1] == "/file"):
         print("File Checker")
@@ -28,17 +35,22 @@ elif len(sys.argv) == 3:
 
                 #Using regex to find urls then slicing off the first and last 2 characters to only display URL
                 if ('http://' in line or 'https://' in line):
-                    print(Fore.GREEN + str(re.findall(r'https?://[^\s<>"].[^\s<>"]+', line))[2:-2] + " is a valid link" + Fore.RESET)
+                    if(g == 0 or g == 1):
+                        print(Fore.GREEN + str(re.findall(r'https?://[^\s<>"].[^\s<>"]+', line))[2:-2] + " is a valid link" + Fore.RESET)
                 elif ('www.' in line and '://' not in line):
-                    print(Fore.RED + str(re.findall(r'www.[^\s<>"].[^\s<>"]+', line))[2:-2] + " is not a valid link" + Fore.RESET)
-                    x = 1
+                  
+                    if(g == 0 or g == 2):
+                        print(Fore.RED + str(re.findall(r'www.[^\s<>"].[^\s<>"]+', line))[2:-2] + " is not a valid link" + Fore.RESET)
+                        x = 1
                 else:
                     if ("<" and ">" in line): #covers situation involving urls within html tags with misspelled http/https
-                        print(Fore.RED + str(re.findall(r'>(.*?)<', line))[2:-2] + " is not a valid link" + Fore.RESET)
-                        x = 1
+                        if(g == 0 or g == 2):
+                            print(Fore.RED + str(re.findall(r'>(.*?)<', line))[2:-2] + " is not a valid link" + Fore.RESET)
+                            x = 1
                     else:
-                        print(Fore.RED + line + " is not a valid link" + Fore.RESET)
-                        x = 1
+                        if(g == 0 or g == 2):
+                            print(Fore.RED + line + " is not a valid link" + Fore.RESET)
+                            x = 1
         except:
             print(Fore.RED + "Sorry, file not found" + Fore.RESET)
             x = 1
