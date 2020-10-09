@@ -15,7 +15,14 @@ if len(sys.argv) == 1:
     print(Fore.RED + "No arguments, please enter either -file (filename), -url (link), or -v"+ Fore.RESET)
     print(Fore.RED + "Windows and Unix style commands also work, --v, /v, etc"+ Fore.RESET)
 
-elif len(sys.argv) == 3:
+elif len(sys.argv) == 3 or len(sys.argv) == 4:
+
+    g = 0
+    if (len(sys.argv) == 4):
+        if (sys.argv[3]) == "--good":
+            g = 1
+        elif (sys.argv[3]) == "--bad":
+            g = 2
 
     if(sys.argv[1] == "-file" or sys.argv[1] == "--file" or sys.argv[1] == "/file"):
         print("File Checker")
@@ -27,16 +34,20 @@ elif len(sys.argv) == 3:
 
                 #Using regex to find urls then slicing off the first and last 2 characters to only display URL
                 if ('http://' in line or 'https://' in line):
-                    print(Fore.GREEN + str(re.findall(r'https?://[^\s<>"].[^\s<>"]+', line))[2:-2] + " is a valid link" + Fore.RESET)
+                    if(g == 0 or g == 1):
+                        print(Fore.GREEN + str(re.findall(r'https?://[^\s<>"].[^\s<>"]+', line))[2:-2] + " is a valid link" + Fore.RESET)
                 elif ('www.' in line and '://' not in line):
-                    print(Fore.RED + str(re.findall(r'www.[^\s<>"].[^\s<>"]+', line))[2:-2] + " is not a valid link" + Fore.RESET)
+                    if(g == 0 or g == 2):
+                        print(Fore.RED + str(re.findall(r'www.[^\s<>"].[^\s<>"]+', line))[2:-2] + " is not a valid link" + Fore.RESET)
                 else:
                     if ("<" and ">" in line): #covers situation involving urls within html tags with misspelled http/https
-                        print(Fore.RED + str(re.findall(r'>(.*?)<', line))[2:-2] + " is not a valid link" + Fore.RESET)
+                        if(g == 0 or g == 2):
+                            print(Fore.RED + str(re.findall(r'>(.*?)<', line))[2:-2] + " is not a valid link" + Fore.RESET)
                     else:
-                        print(Fore.RED + line + " is not a valid link" + Fore.RESET)
+                        if(g == 0 or g == 2):
+                            print(Fore.RED + line + " is not a valid link" + Fore.RESET)
         except:
-            print(Fore.RED + "Sorry, file not found" + Fore.RESET)
+            print(Fore.RED + "Sorry, file not found" + Fore.RESET)      
           
     elif(sys.argv[1] == "-url" or sys.argv[1] == "--url" or sys.argv[1] == "/url"):
         print("URL Checker")
@@ -53,7 +64,7 @@ elif len(sys.argv) == 3:
 
 #Version Option                  
 elif(sys.argv[1] == "-v" or sys.argv[1] == "--v" or sys.argv[1] == "/v"):
-    print("This is version 0.1 of the PYLinkChecker")
+    print("This is version 0.3 of the PYLinkChecker")
     
 elif len(sys.argv) == 2:
     print(Fore.RED + "Not enough entered, please enter the name of a file or a url" + Fore.RESET) 
