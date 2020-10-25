@@ -6,10 +6,11 @@
 import sys
 import urllib3
 import re
-
 http = urllib3.PoolManager()
 from colorama import init, Fore
 init(convert=True)
+
+regex = 'https?:\/\/[=a-zA-Z0-9\_\/\?\&\.\-]+'
 
 x = 0
 if len(sys.argv) == 1:
@@ -70,6 +71,38 @@ elif len(sys.argv) == 3 or len(sys.argv) == 4:
         except:
              print(Fore.RED + "Sorry, the link is broken, please fix it and try again!" + Fore.RESET)
              x = 1
+
+    if(sys.argv[1] == "-ignore" or sys.argv[1] == "--ignore" or sys.argv[1] == "/ignore"):
+        print("File Ignore")
+        ignoreURLs = []
+        try:
+            with open(sys.argv[2], 'r') as fi:
+                lines = [line.rstrip('\n') for line in fi.readlines()]
+            for line in lines:
+                if line[0] == '#':
+                    pass
+                #Using regex to find urls then slicing off the first and last 2 characters to only display URL
+                elif ('http://' in line or 'https://' in line):
+                    if(g == 0 or g == 1):
+                        str = re.findall('https?://[^\s<>"].[^\s<>"]+', line)
+                        ignoreURLs += str       
+        except:
+            print(Fore.RED + "Sorry, file not found" + Fore.RESET)
+            x = 1
+        try:
+            with open(sys.argv[3], 'r') as f:
+                #find urls in test.txt
+                lines = re.findall(regex, f.read())
+            #find all to be ignored urls
+            tobeIgnored = [j for i in ignoreURLs for j in lines if i in j or j in i]
+            
+            #find all not ignored urls
+            notIgnored = [x for x in lines if x not in tobeIgnored]
+            for ni in notIgnored:
+                print(Fore.GREEN + ni + " is a valid link" + Fore.RESET)
+        except:
+            print(Fore.RED + "Sorry, file not found" + Fore.RESET)
+            x = 1
 
 #Version Option                  
 elif(sys.argv[1] == "-v" or sys.argv[1] == "--v" or sys.argv[1] == "/v"):
