@@ -1,6 +1,6 @@
 #Nathan Pang
 #108660184
-#24/10/2020
+#07/11/2020
 
 import sys
 import urllib3
@@ -8,6 +8,8 @@ import re
 http = urllib3.PoolManager()
 from colorama import init, Fore
 init(convert=True)
+import urllib.request
+import json
 
 def FileNotFound():
     return print(Fore.RED + "Sorry, file not found" + Fore.RESET)
@@ -107,7 +109,32 @@ elif len(sys.argv) == 3 or len(sys.argv) == 4:
 #Version Option                  
 elif(sys.argv[1] == "-v" or sys.argv[1] == "--v" or sys.argv[1] == "/v"):
     print("This is version 0.5 of the PYLinkChecker")
-    
+
+#Telescope
+elif(sys.argv[1] == "-t" or sys.argv[1] == "--t" or sys.argv[1] == "/t"):
+    with urllib.request.urlopen("http://localhost:3000/feeds") as url:
+        TelescopeData = url.read()
+        Posts_dict = json.loads(TelescopeData)
+        for x in range(len(Posts_dict)):
+            if x - (len(Posts_dict)) >= -10:
+                beginningURL = "http://localhost:3000/posts/"
+                #print(Posts_dict[x]["id"])
+                beginningURL += (Posts_dict[x]["id"])
+                #print(beginningURL)
+                try:
+                    response = http.request('HEAD', beginningURL)
+                    if response.status == 200:
+                        print(sys.argv[2], ": good")
+                    elif response.status == 400 or response == 404:
+                        print(sys.argv[2], ": bad")
+                        errorCode = 1
+                    else:
+                        print(sys.argv[2], ": unknown")
+                        errorCode = 1
+                except:
+                     print(Fore.RED + "Sorry, the link is broken, please fix it and try again!" + Fore.RESET)
+                     errorCode = 1
+                
 elif len(sys.argv) == 2:
     print(Fore.RED + "Not enough entered, please enter the name of a file or a url" + Fore.RESET)
     errorCode = 1
