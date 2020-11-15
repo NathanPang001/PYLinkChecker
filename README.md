@@ -2,7 +2,7 @@
 
 Hello, this is PYLinkChecker, a tool coded in python designed to check the validity of links by either enter the name of a file or by entering a url.
 
-To use this tool, you need to install python, urllib3 (https://pypi.org/project/urllib3/), and colorama (https://pypi.org/project/colorama/#description).
+To use this tool, read CONTRIBUTING.md for more information on how to install.
 
 This tool checks if the links in the file contains http:// or https:// and determines if they are valid through that check.
 It checks if URL's are valid by sending a request to the url and using the response sent from the website, a status of 200 means that it is considered good, a status of 400/404 means that it is considered bad, and any other status means that it is considered unknown.
